@@ -1,7 +1,7 @@
 <template>
-  <div :class='classBind()' @click='toggleDisplay'>
+  <div :class='classBind()' @click='selectNumber'>
       <p>
-          {{num}}
+          {{tile.value}}
       </p>
   </div>
 </template>
@@ -9,21 +9,38 @@
 <script>
 export default {
     props:{
-        num: Number
+        tile: Object,
     },
     data(){
         return {
-            display: true
+            classObj: ''
         }
     },
     methods: {
+        // classBind(){
+        //     this.classObj = this.tile.visible ? '' : 'tile-hide ';
+        //     this.classObj += this.tile.highlighted ? ' selected' : '';
+        //     return this.classObj
+        // },
         classBind(){
-            return this.display ? '' : 'tile-hide'
+            let styleClass = '';
+            if(!this.tile.visible){
+                styleClass = 'tile-hide'+' ';
+            }
+            if(this.tile.highlighted){
+                styleClass += 'tile-selected'
+            }
+            return styleClass
         },
-        toggleDisplay(){
-            console.log('clicked')
-            this.display = !this.display;
+        selectNumber(){
+            this.$emit('selected', this.tile);
+        },
+        evaluate(){
+            this.$emit('evaluate', this.tile)
         }
+    },
+    computed: {
+
     }
 }
 </script>
