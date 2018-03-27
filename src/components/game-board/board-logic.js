@@ -1,17 +1,30 @@
+var Tile = function(coordinates, value, index){
+    this.index = index;
+    this.value = value;
+    this.position = coordinates;
+    this.visible = true;
+    this.highlighted = false;
+}
 var Board = function(size = 4){
     this.size = size;
     this.View = [];
-    for (let i = 0; i < this.size*this.size; i++) {
-        let obj = {
-            index: i,
-            value: this.RNG(),
-            visible: true,
-            highlighted: false
+    for (let row = 0; row < this.size; row++) {
+        for (let col = 0; col < this.size; col++) {            
+            this.View.push( 
+                this.addTile([row, col]) 
+            );
         }
-        this.View.push(obj);
     }
     //Store index of selected tiles
     this.tileStore= [];
+    //console.dir(this.View)
+}
+Board.prototype.addTile = function (coords){
+    let tile = new Tile;
+    let index = this.View.length;
+    Tile.apply(tile, [coords, this.RNG(), index])
+    return tile
+    // console.log('success: ' + tile.position)
 }
 
 Board.prototype.RNG = function (min = 1, max = 10) {
