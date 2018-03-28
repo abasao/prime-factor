@@ -1,32 +1,36 @@
 <template>
     <div>
-        <div class='menu grid-center'>
+        <!-- :class='factorize()' -->
+        <div class='menu grid-center ' :class='sumSelected()'>
             <!-- <button @click='evaluateExpression'>Eval Button Here</button> -->
             <div class='btn-container'>
-                <div class="btn" @click='buttonClicked'><p>0</p></div>
                 <div class="btn" @click='buttonClicked'><p>2</p></div>
-                <div class="btn" @click='buttonClicked'><p>4</p></div>
-                <div class="btn" @click='buttonClicked'><p>6</p></div>
-                <div class="btn" @click='buttonClicked'><p>8</p></div>
-            </div>
-            <div class='btn-container'>            
-                <div class="btn" @click='buttonClicked'><p>1</p></div>
                 <div class="btn" @click='buttonClicked'><p>3</p></div>
                 <div class="btn" @click='buttonClicked'><p>5</p></div>
                 <div class="btn" @click='buttonClicked'><p>7</p></div>
                 <div class="btn" @click='buttonClicked'><p>9</p></div>
+                <div class="btn" @click='buttonClicked'><p>11</p></div>
             </div>
-            <!-- <div class='input-container flex-center'>
-                <input type="text">
-            </div> -->
-            <div class='factor-row flex-center'>
-                <div class='factor flex-center' v-for='(factor, factor_index) in this.factors' :key='factor_index'
-                @click='removeFactor(factor)'>
-                    <p>
+
+            <div class="factor-row grid-center">
+                <div class='factors flex-center'>
+                    <div class='factor-tile flex-center' 
+                    v-for='(factor, factor_index) in this.factors' 
+                    @click='removeFactor(factor)' :key='factor_index'>
+                        <p>
                         {{factor.value}}
-                    </p>
+                        </p>
+                    </div>
+                </div>
+                <div class='result-col flex-center'>
+                    <div class='result flex-center'>
+                        <p>
+                            {{results}}
+                        </p>
+                    </div>
                 </div>
             </div>
+
         </div>
         <div class='grid-center' id='board' :style='style()'>
             <!-- <div class='board-tiles flex-center' v-for="(viewTile, index) in this.board.View" :key='index'>
@@ -53,7 +57,8 @@ export default {
         return {
             board: new Board(5),
             msg: 'A message from Data',
-            factors: []
+            factors: [],
+
         }
     },
     methods: {
@@ -64,26 +69,33 @@ export default {
             let size = this.board.size;
             return {gridTemplate: `repeat(${size}, minmax(50px, 85px)) / repeat(${size}, minmax(50px, 85px))`}
         },
+        sumSelected(){
+            return this.board.isSum() ? '' : 'hidden'
+        },
         selectionHandler(payload){
-            // console.log('clicked: ' + payload.value)
             this.board.select(payload);
         },
         evaluateExpression(){
-            console.log('eval express')
             this.board.evaluate();
         },
         buttonClicked(e){
             let btnValue = e.target.innerText;
-            console.log(btnValue);
             this.factors.push({value: btnValue, show: true});
 
         },
         removeFactor(factor){
-            console.log(this.factors)
             factor.show = false;
             let ind = this.factors.indexOf(factor);
             this.factors.splice(ind,1)
-            console.log(this.factors);
+        }
+    },
+    computed: {
+        results(){
+            if (this.factors.length > 0){
+                return this.factors.reduce((acc, factor) => acc*factor.value, 1)
+            }else{
+                return 0
+            }
         }
     },
     components: {

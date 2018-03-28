@@ -21,17 +21,9 @@ body{
     display: grid;
     justify-content: center;    
 }
-.display-sm {
 
-}
 .display-lg {
     display: none;
-}
-#board {
-
-}
-.board-tiles {
- 
 }
 
 .menu {
@@ -43,9 +35,9 @@ body{
     justify-content: space-evenly;
 }
 .btn-container .btn{
-    background-color: rgba(25, 25, 112, 0.767);
-    color:white;
-    flex-basis: 19%;
+    background-color: rgba(25, 50, 100, 1);
+    color:#fff;
+    flex-basis: 15%;
     border-radius: 5%;
     font-size: 2em;
     cursor: pointer;
@@ -54,22 +46,38 @@ p {
     margin:0;
 }
 .factor-row{
-    height: 2em;
-    background: hsla(120, 60%, 70%, 0.2);
-    border-radius: 10%;
+    grid-template-columns: 80% 20%;
+    padding: 0 1%;
 }
-.factor{
-    background-color:darkslategray;
-    border: 2px dashed darkslategray;
-    color: white;
-    font-size: 2em;
+.factors{
+    height: 2em;
+    background: hsl(120, 13%, 60%);
+    border-radius: 2%;
+}
+.factor-tile{
+    border: 2px solid #55555555;
+    background-color: #444;
+    color: #DDD;     
+    /* background-color:darkslategray;
+    color: white; */
+    font-size: 1.8em;
     align-items: center;
     border-radius: 10%;
     cursor: pointer;
     margin: 0 1px;
     
 }
-
+.result-col {
+    height: 2em;    
+    border-radius: 5%;
+    background-color: #333;
+    color: #DDD; 
+    pointer-events: none;
+}
+.result {
+    font-size: 1.8em;
+    align-items: center;
+}
 .tile{
     background-color: rgba(240, 128, 128, 0.74);
     border: 2px solid rgba(19, 143, 184, 0.281);
@@ -84,14 +92,21 @@ p {
     margin: 0 auto;
 }
 .tile-selected {
-    background-color: rgb(19, 143, 184);
-    border: 2px solid rgba(240, 128, 128, 0.281);
+    border: 2px solid rgba(19, 143, 184, 1);
 }
-.tile-hide {
-    opacity: 0;
+.hidden {
+    opacity: 0.2;
+    pointer-events: none;
 }
-.tile-hide p {
+/* .hidden p {
     display: none;
+} */
+.is-sum {
+    background-color: rgb(19, 143, 184);
+    border: 2px solid rgba(240, 128, 128, 0.281);    
+}
+.tile-selected.is-sum{
+    border: 2px solid white;
 }
 .submission {
     grid-template: auto / minmax(250px, 425px);

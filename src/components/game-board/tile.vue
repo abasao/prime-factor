@@ -17,18 +17,16 @@ export default {
         }
     },
     methods: {
-        // classBind(){
-        //     this.classObj = this.tile.visible ? '' : 'tile-hide ';
-        //     this.classObj += this.tile.highlighted ? ' selected' : '';
-        //     return this.classObj
-        // },
         classBind(){
             let styleClass = '';
-            if(!this.tile.visible){
-                styleClass = 'tile-hide'+' ';
+            if (!this.tile.visible){
+                styleClass = 'hidden' + ' ';
             }
-            if(this.tile.highlighted){
-                styleClass += 'tile-selected'
+            if (this.tile.highlighted){
+                styleClass += 'tile-selected' + ' '
+            }
+            if (this.tile.isSum) {
+                styleClass += 'is-sum'
             }
             return styleClass
         },
