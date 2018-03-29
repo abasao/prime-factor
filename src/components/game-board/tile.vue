@@ -1,5 +1,7 @@
 <template>
-  <div :class='classBind()' @click='selectNumber'>
+  <div :class='classBind()' @click='selectNumber' 
+  @mousedown.left="startGroupSelection" @mouseup.left="endGroupSelection"
+  @mouseover="hoverSelection">
       <p>
           {{tile.value}}
       </p>
@@ -30,12 +32,21 @@ export default {
             }
             return styleClass
         },
-        selectNumber(){
+        selectNumber (){
             this.$emit('selected', this.tile);
         },
-        evaluate(){
-            this.$emit('evaluate', this.tile)
-        }
+        startGroupSelection (){
+            this.$emit('startGroupSelection', this.tile)
+        },
+        endGroupSelection (){
+            this.$emit('endGroupSelection', this.tile)
+        },
+        hoverSelection (){
+            this.$emit('hoverSelection', this.tile)
+        }            
+        // evaluate(){
+        //     this.$emit('evaluate', this.tile)
+        // }
     },
     computed: {
 

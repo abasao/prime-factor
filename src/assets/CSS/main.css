@@ -54,7 +54,7 @@ p {
     background: hsl(120, 13%, 60%);
     border-radius: 2%;
 }
-.factor-tile{
+.factor-value{
     border: 2px solid #55555555;
     background-color: #444;
     color: #DDD;     
@@ -67,6 +67,23 @@ p {
     margin: 0 1px;
     
 }
+.tile > p {
+    pointer-events: none;
+}
+.operator {
+    font-size: 1.2em;
+    align-items: center;
+    border-radius: 10%;
+    cursor: pointer;
+    margin: 0 1px;
+    pointer-events: none;
+}
+.factors > .factor-tile:last-child > .operator:last-child{
+    /* color:blue; */
+    /* opacity: 0.1;  */
+    display: none; 
+}
+
 .result-col {
     height: 2em;    
     border-radius: 5%;
@@ -103,7 +120,8 @@ p {
 } */
 .is-sum {
     background-color: rgb(19, 143, 184);
-    border: 2px solid rgba(240, 128, 128, 0.281);    
+    color: white;
+    border: 2px solid rgba(240, 128, 128, 0.4);    
 }
 .tile-selected.is-sum{
     border: 2px solid white;
