@@ -70,6 +70,7 @@ Board.prototype.evaluate = function(){
         let lastIndex = this.tileStore.pop();
         let headTile = this.View[lastIndex];
         headTile.value = accumulate;
+        headTile.factors = mod.factorize(accumulate);
         headTile.visible = true;
         headTile.isSum = true;
         //reset Store
@@ -84,8 +85,8 @@ Board.prototype.isSum = function (){
         let index = this.tileStore[0];
         let selection = this.View[index];
         let sum = selection.isSum ? true : false;
-        return sum
+        return [sum, selection.value, selection]
     }
-    return false
+    return [false]
 }
 export {Board}

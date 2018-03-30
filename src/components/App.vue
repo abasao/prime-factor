@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="grid">
-      <h1>New Vue App</h1>
+      <h1>Prime Factor</h1>
     </div>
     <board class="grid"/>
     <div class='grid display-lg'>

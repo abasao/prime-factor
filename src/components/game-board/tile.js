@@ -8,6 +8,7 @@ class Tile {
         this.visible = true;
         this.highlighted = false;
         this.isSum = false;
+        this.complete = false;
     }
 }
 export { Tile }

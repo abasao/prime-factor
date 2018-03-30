@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='result-col flex-center'>
+                <div class='result-col flex-center' :class="equalFactorClass">
                     <div class='result flex-center'>
                         <p>
                             {{results}}
@@ -39,14 +39,23 @@
             </div>
 
         </div>
+        <div class='submission flex-center'>
+            <button @click='evaluateExpression'>
+                + Add 
+            </button>
+            <button disabled='disabled' style='pointer-events: none;'>Score: {{score}}</button>
+            <button :class="{hidden: !equalFactor()}"  @click='addScore'> <!-- :class='sumSelected()' -->
+                Factor 
+            </button>
+        </div>
         <div class='grid-center' id='board' :style='style()'>
                     <tile class='tile flex-center' v-for="(viewTile, index) in this.board.View" :tile='viewTile' 
                     @hoverSelection='hoverSelect' :key='index' 
                     @startGroupSelection='groupSelect' @endGroupSelection='groupSelect("end")'
                     />            
         </div>
-        <div class='submission grid-center'>
-            <button @click='evaluateExpression'>Submit</button>
+        <div class="grid-center">
+            <button class="submission" style='font-size: 1.3em;' @click='resetGame'> Reset Game </button>
         </div>
     </div>
 </template>
@@ -64,6 +73,7 @@ export default {
             msg: 'A message from Data',
             factors: [],
             tileGroup: [],
+            score: 0,
             startSelecting: false,
             removeSelection: false
         }
@@ -77,7 +87,7 @@ export default {
             return {gridTemplate: `repeat(${size}, minmax(50px, 85px)) / repeat(${size}, minmax(50px, 85px))`}
         },
         sumSelected (){
-            return this.board.isSum() ? '' : 'hidden'
+            return this.board.isSum()[0] ? '' : 'hidden'
         },
         groupSelect (payload){
             if(typeof payload.value === 'number') {
@@ -127,7 +137,30 @@ export default {
             factor.show = false;
             let ind = this.factors.indexOf(factor);
             this.factors.splice(ind,1)
-        }
+        },
+        equalFactor(){
+            let targetTile = this.board.isSum();
+            if(targetTile[0] && this.results === targetTile[1]){
+                console.log('factor successful!!')
+                return true
+            }
+        },
+        addScore (){
+            this.score += this.factors.length*3;
+            let completeTile = this.board.isSum()[2];
+            completeTile.complete = true;
+            this.board.select(completeTile);
+            this.factors = [];
+        },
+        resetGame (){
+            this.board = new Board(5);
+            this.msg = 'A message from Data';
+            this.factors = [];
+            this.tileGroup = [];
+            this.startSelecting = false;
+            this.removeSelection = false;
+
+        },  
     },
     computed: {
         results (){
@@ -135,6 +168,13 @@ export default {
                 return this.factors.reduce((acc, factor) => acc*factor.value, 1)
             }else{
                 return 0
+            }
+        },
+        equalFactorClass(){
+            if(this.equalFactor()){
+                return 'greenlight'
+            }else{
+                return ''
             }
         }
     },

@@ -28,7 +28,10 @@ export default {
                 styleClass += 'tile-selected' + ' '
             }
             if (this.tile.isSum) {
-                styleClass += 'is-sum'
+                styleClass += 'is-sum' + ' '
+            }
+            if (this.tile.complete){
+                styleClass += 'completed-tile' + ' '
             }
             return styleClass
         },
