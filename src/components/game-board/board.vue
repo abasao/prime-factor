@@ -8,8 +8,17 @@
                 <div class="btn" @click='buttonClicked'><p>3</p></div>
                 <div class="btn" @click='buttonClicked'><p>5</p></div>
                 <div class="btn" @click='buttonClicked'><p>7</p></div>
-                <div class="btn" @click='buttonClicked'><p>9</p></div>
-                <div class="btn" @click='buttonClicked'><p>11</p></div>
+                <div class="btn" @click='buttonClicked'><p>9</p></div>    
+                <div class="btn" @click='buttonClicked'><p>11</p></div>    
+                <!-- <select v-model='selected' class="btn">
+                    <option 
+                    v-for='(prime, index) in primes' :key='index'
+                    :value="prime">
+                        {{prime}}
+                    </option>
+                </select> -->
+
+                <!-- <div class="btn" @click='buttonClicked'><p>11</p></div> -->
             </div>
 
             <div class="factor-row grid-center">
@@ -48,11 +57,15 @@
                 Factor 
             </button>
         </div>
-        <div class='grid-center' id='board' :style='style()'>
-                    <tile class='tile flex-center' v-for="(viewTile, index) in this.board.View" :tile='viewTile' 
-                    @hoverSelection='hoverSelect' :key='index' 
-                    @startGroupSelection='groupSelect' @endGroupSelection='groupSelect("end")'
-                    />            
+        <div class='grid-center' id='board' :none='style()'>
+            <tile class='tile flex-center' v-for="(viewTile, index) in this.board.View" :tile='viewTile' 
+            @hoverSelection='hoverSelect' :key='index' 
+            @startGroupSelection='groupSelect' @endGroupSelection='groupSelect("end")'
+            />            
+            <!-- <div class="game-over" style='grid-column: span 5'> -->
+                <game-over style='grid-column: span 5'
+                :board="board" :restart="resetGame"></game-over>
+            <!-- </div> -->
         </div>
         <div class="grid-center">
             <button class="submission" style='font-size: 1.3em;' @click='resetGame'> Reset Game </button>
@@ -62,7 +75,9 @@
 
 <script>
 import tile from "./tile.vue";
+import gameOver from "./game-over.vue"
 import { Board } from "./board.js";
+
 export default {
     props: {
 
@@ -79,17 +94,17 @@ export default {
         }
     },
     methods: {
-        display (){
-            return this.board.View
-        },
         style (){
             let size = this.board.size;
-            return {gridTemplate: `repeat(${size}, minmax(50px, 85px)) / repeat(${size}, minmax(50px, 85px))`}
+            return {gridTemplate: `repeat(${size}, minmax(30px, 85px)) / repeat(${size}, minmax(30px, 85px))`}
         },
         sumSelected (){
-            return this.board.isSum()[0] ? '' : 'hidden'
+            //just bind class hidden to truth value of isSum
+            return this.board.isSum().status ? '' : 'hidden'
         },
         groupSelect (payload){
+            console.log('---------groupselect-----')
+            console.log(payload)
             if(typeof payload.value === 'number') {
                 //add tile, enable group-selection, save or remove 
                 //based on target selection state, toggle target selection state
@@ -127,7 +142,12 @@ export default {
             }
         },
         evaluateExpression (){
-            this.board.evaluate();
+            //wasted method, go directly to this
+            let headTile = this.board.evaluate();
+            if(headTile){
+                this.groupSelect(headTile);
+                this.groupSelect('end');
+            }
         },
         buttonClicked (e){
             let btnValue = e.target.innerText;
@@ -139,18 +159,29 @@ export default {
             this.factors.splice(ind,1)
         },
         equalFactor(){
-            let targetTile = this.board.isSum();
-            if(targetTile[0] && this.results === targetTile[1]){
+            let target = this.board.isSum();
+            if(target.status && this.results === target.value){
                 console.log('factor successful!!')
                 return true
             }
         },
         addScore (){
-            this.score += this.factors.length*3;
-            let completeTile = this.board.isSum()[2];
+            this.score += this.setScore(this.factors);
+            let completeTile = this.board.isSum().Tile;
             completeTile.complete = true;
             this.board.select(completeTile);
             this.factors = [];
+        },
+        setScore (factor){
+            var len = factor.length;
+            console.log('my factor')
+            console.log(factor)
+            let m = factor.reduce( (accum, val) => {
+                accum += val.value > 2 ? 3 : 2;
+                return accum
+            }, 0)
+            console.log('my reduction' + m)
+            return m + Math.floor(len/3)*len
         },
         resetGame (){
             this.board = new Board(5);
@@ -171,15 +202,24 @@ export default {
             }
         },
         equalFactorClass(){
+            //another place where you can bind class to truthiness of object method
             if(this.equalFactor()){
                 return 'greenlight'
             }else{
                 return ''
             }
-        }
+        },
+        primes (){
+            return 
+            [
+                11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,
+                71,73,79,83,89,91,101,103,107,109,113,127,131
+            ]
+        },        
     },
     components: {
-        tile
+        tile,
+        gameOver
     }
 }
 </script>

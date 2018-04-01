@@ -75,6 +75,10 @@ Board.prototype.evaluate = function(){
         headTile.isSum = true;
         //reset Store
         this.tileStore = [];
+        return headTile
+    }else{
+        console.log("select 2 or more tiles for addition");
+        return false
     }
 }
 
@@ -84,9 +88,24 @@ Board.prototype.isSum = function (){
     if (this.tileStore.length === 1){
         let index = this.tileStore[0];
         let selection = this.View[index];
-        let sum = selection.isSum ? true : false;
-        return [sum, selection.value, selection]
+        let status = selection.isSum ? true : false;
+        return {status: status, value: selection.value, Tile: selection}
     }
-    return [false]
+    return {status: false, value: null, Tile: null}
 }
+
+Board.prototype.hasWon = function () {
+    let status = this.View.every(tile => (!tile.visible || tile.complete) ? true : false);
+    return status
+}
+
+Board.prototype.hasLost = function () {
+    let tilesLeft = this.View.filter(tile => tile.visible && !tile.complete);
+    if (tilesLeft.length < 2 && !this.hasWon()){
+        return !tilesLeft[0].isSum
+    }else{
+        return false
+    }
+}
+
 export {Board}
