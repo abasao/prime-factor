@@ -5,10 +5,14 @@
     </div>
     <board class="grid"/>
     <div class='grid display-lg'>
-      <h4>Here is how you play</h4>
+      <!-- <h4>Here is how you play</h4> -->
+      <h4>
+        Made with VueJS
+      </h4>
     </div>
     <div class='display-sm'>
-        <h4>Here is how you play mobile</h4>
+        <!-- <h4>Here is how you play mobile</h4> -->
+        <h4>Made with VueJS</h4>
     </div>
   </div>
 </template>
