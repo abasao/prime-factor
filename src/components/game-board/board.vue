@@ -103,8 +103,6 @@ export default {
             return this.board.isSum().status ? '' : 'hidden'
         },
         groupSelect (payload){
-            console.log('---------groupselect-----')
-            console.log(payload)
             if(typeof payload.value === 'number') {
                 //add tile, enable group-selection, save or remove 
                 //based on target selection state, toggle target selection state
@@ -137,7 +135,6 @@ export default {
                             this.board.select(payload)
                         }
                     }
-                    console.log('hovering after selection start')
                 }
             }
         },
